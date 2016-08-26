@@ -13,8 +13,9 @@ class UserCell: UITableViewCell {
 	
 	var message: Message? {
 		didSet {
-			if let toId = message?.toId {
-				FIRDatabase.database().reference().child("users").child(toId).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+			if let chartPartnerId = message?.getChatPartnerId() {
+				
+				FIRDatabase.database().reference().child("users").child(chartPartnerId).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
 					
 					guard let results = snapshot.value as? [String: AnyObject] else {
 						return

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		350E5E29ADC3D8E161256B38 /* Pods_Courier.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B942189C258803C99936B6 /* Pods_Courier.framework */; };
 		8C34922F1D6B774B00D348A3 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C34922E1D6B774B00D348A3 /* ChatMessageCell.swift */; };
+		8C57E6271D6D08850062A2BD /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C57E6261D6D08850062A2BD /* SettingsController.swift */; };
+		8C57E6291D6D09150062A2BD /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C57E6281D6D09150062A2BD /* SettingsCell.swift */; };
+		8C57E62B1D6D09530062A2BD /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C57E62A1D6D09530062A2BD /* BaseCell.swift */; };
 		8C6ABC6A1D6A422700C87621 /* NewMessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6ABC691D6A422700C87621 /* NewMessageController.swift */; };
 		8C6ABC6C1D6A441B00C87621 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6ABC6B1D6A441B00C87621 /* User.swift */; };
 		8C6ABC6E1D6A48D400C87621 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6ABC6D1D6A48D400C87621 /* UserCell.swift */; };
@@ -31,6 +34,9 @@
 		1C6D17964341B363CB2D5C2A /* Pods-Courier.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Courier.release.xcconfig"; path = "Pods/Target Support Files/Pods-Courier/Pods-Courier.release.xcconfig"; sourceTree = "<group>"; };
 		72B942189C258803C99936B6 /* Pods_Courier.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Courier.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C34922E1D6B774B00D348A3 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
+		8C57E6261D6D08850062A2BD /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		8C57E6281D6D09150062A2BD /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		8C57E62A1D6D09530062A2BD /* BaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		8C6ABC691D6A422700C87621 /* NewMessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageController.swift; sourceTree = "<group>"; };
 		8C6ABC6B1D6A441B00C87621 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		8C6ABC6D1D6A48D400C87621 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
@@ -122,6 +128,7 @@
 				8CDE6AAC1D677F0000C72B3A /* LoginController.swift */,
 				8CF5264C1D67ADAD00A0D3DA /* RegisterController.swift */,
 				8C6ABC691D6A422700C87621 /* NewMessageController.swift */,
+				8C57E6261D6D08850062A2BD /* SettingsController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -129,6 +136,8 @@
 		8CDE6AAB1D677ED200C72B3A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8C57E62A1D6D09530062A2BD /* BaseCell.swift */,
+				8C57E6281D6D09150062A2BD /* SettingsCell.swift */,
 				8CDE6AB31D6780EE00C72B3A /* LoginView.swift */,
 				8CF5264A1D67ADA000A0D3DA /* RegisterView.swift */,
 				8C6ABC6D1D6A48D400C87621 /* UserCell.swift */,
@@ -282,8 +291,11 @@
 				8CE11BD61D6A626600051EBC /* Message.swift in Sources */,
 				8CF5264B1D67ADA000A0D3DA /* RegisterView.swift in Sources */,
 				8CDE6AB41D6780EE00C72B3A /* LoginView.swift in Sources */,
+				8C57E62B1D6D09530062A2BD /* BaseCell.swift in Sources */,
+				8C57E6271D6D08850062A2BD /* SettingsController.swift in Sources */,
 				8C6ABC6E1D6A48D400C87621 /* UserCell.swift in Sources */,
 				8CDE6AB21D6780B100C72B3A /* Extensions.swift in Sources */,
+				8C57E6291D6D09150062A2BD /* SettingsCell.swift in Sources */,
 				8CE11BDA1D6A685200051EBC /* InputContainerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

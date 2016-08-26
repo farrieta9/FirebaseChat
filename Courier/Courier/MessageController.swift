@@ -16,16 +16,25 @@ class MessageController: UITableViewController {
 	var messagesDictionary = [String: Message]()
 	var timer: NSTimer?
 	
+	lazy var settingsLauncher: SettingsController = {
+		let launcher = SettingsController()
+		launcher.messageController = self
+		return launcher
+	}()
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		observeUserMessages()
 		checkIfUserIsSignedIn()
-		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .Plain, target: self, action: #selector(handleLogout))
+		navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu-50"), style: .Plain, target: self, action: #selector(handleSettings))
 		
 		let image = UIImage(named: "CreateNew-50")
 		navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(handleNewMessage))
 		tableView.registerClass(UserCell.self, forCellReuseIdentifier: cellId)
-		
+	}
+	
+	func handleSettings() {
+		settingsLauncher.showSettings()
 	}
 	
 	func handleNewMessage() {
@@ -68,7 +77,6 @@ class MessageController: UITableViewController {
 	func observeUserMessages() {
 		messages.removeAll()
 		messagesDictionary.removeAll()
-		tableView.reloadData()
 		
 		guard let uid = FIRAuth.auth()?.currentUser?.uid else {
 			return
@@ -126,6 +134,7 @@ class MessageController: UITableViewController {
 			
 			}, withCancelBlock: nil)
 	}
+	
 }
 
 extension MessageController {
@@ -174,3 +183,49 @@ extension MessageController {
 	}
 }
 
+extension MessageController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+	
+	func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+		guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+			return
+		}
+		
+		uploadUserImageToFirebase(image)
+		dismissViewControllerAnimated(true, completion: nil)
+	}
+	
+	private func uploadUserImageToFirebase(image: UIImage) {
+		
+		guard let uploadImage = UIImageJPEGRepresentation(image, 0.1), uid = FIRAuth.auth()?.currentUser?.uid  else {
+			return
+		}
+		
+		FIRStorage.storage().reference().child("users-images").child(uid).putData(uploadImage, metadata: nil) { (metadata, error) in
+			if error != nil {
+				print(error)
+				return
+			}
+			
+			guard let imageURLString = metadata?.downloadURL()?.absoluteString else {
+				return
+			}
+			
+			let values = ["profileImageURL": imageURLString]
+			FIRDatabase.database().reference().child("users").child(uid).updateChildValues(values)
+		}
+	}
+	
+	func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+		dismissViewControllerAnimated(true, completion: nil)
+	}
+	
+	func launchImagePicker(sourceType: UIImagePickerControllerSourceType) {
+		if UIImagePickerController.isSourceTypeAvailable(sourceType) {
+			let picker = UIImagePickerController()
+			picker.sourceType = sourceType
+			picker.allowsEditing = false
+			picker.delegate = self
+			presentViewController(picker, animated: true, completion: nil)
+		}
+	}
+}
