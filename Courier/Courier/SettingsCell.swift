@@ -10,18 +10,18 @@ import UIKit
 
 class SettingsCell: BaseCell {
 	
-	override var highlighted: Bool {
+	override var isHighlighted: Bool {
 		didSet {
-			backgroundColor = highlighted ? UIColor.darkGrayColor() : UIColor.whiteColor()
-			nameLabel.textColor = highlighted ? UIColor.whiteColor() : UIColor.blackColor()
+			backgroundColor = isHighlighted ? UIColor.darkGray : UIColor.white
+			nameLabel.textColor = isHighlighted ? UIColor.white : UIColor.black
 		}
 	}
 	
 	let nameLabel: UILabel = {
 		let label = UILabel()
 		label.text = "Settings"
-		label.textAlignment = .Center
-		label.font = UIFont.systemFontOfSize(16)
+		label.textAlignment = .center
+		label.font = UIFont.systemFont(ofSize: 16)
 		return label
 	}()
 	

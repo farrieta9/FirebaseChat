@@ -11,69 +11,69 @@ import Firebase
 
 class NewMessageController: UITableViewController {
 	
-	private let cellId = "cellId"
+	fileprivate let cellId = "cellId"
 	var users = [User]()
 	var messageController: MessageController? // parent
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: #selector(handleCancel))
-		tableView.registerClass(UserCell.self, forCellReuseIdentifier: cellId)
+		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
+		tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
 		
 		fetchUser()
 	}
 	
 	func fetchUser() {
-		FIRDatabase.database().reference().child("users").observeEventType(.ChildAdded, withBlock: { (snapshot) in
+		FIRDatabase.database().reference().child("users").observe(.childAdded, with: { (snapshot) in
 			guard let results = snapshot.value as? [String: AnyObject] else {
 				return
 			}
 			
 			let user = User()
 
-			user.setValuesForKeysWithDictionary(results)
+			user.setValuesForKeys(results)
 			user.uid = snapshot.key
 			self.users.append(user)
 			
-			dispatch_async(dispatch_get_main_queue(), { 
+			DispatchQueue.main.async(execute: { 
 				self.tableView.reloadData()
 			})
 			
-		}, withCancelBlock: nil)
+		}, withCancel: nil)
 	}
 	
 	func handleCancel() {
-		dismissViewControllerAnimated(true, completion: nil)
+		dismiss(animated: true, completion: nil)
 	}
 	
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 	
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return users.count
 	}
 	
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! UserCell
-		cell.textLabel?.text = users[indexPath.row].username
-		cell.detailTextLabel?.text = users[indexPath.row].email
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
+		cell.textLabel?.text = users[(indexPath as NSIndexPath).row].username
+		cell.detailTextLabel?.text = users[(indexPath as NSIndexPath).row].email
 		
-		if let imageURL = users[indexPath.row].profileImageURL {
+		if let imageURL = users[(indexPath as NSIndexPath).row].profileImageURL {
 			cell.profileImageView.loadImageUsingURLString(imageURL)
 		}
 		
 		return cell
 	}
 	
-	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return 64
 	}
 	
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		dismissViewControllerAnimated(true, completion: nil)
-		let user = users[indexPath.row]
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		dismiss(animated: true, completion: nil)
+		let user = users[(indexPath as NSIndexPath).row]
 		messageController?.showChatControllerForUser(user)
 	}
 }

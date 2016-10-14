@@ -18,10 +18,10 @@ class InputContainerView: UIView {
 	}()
 	
 	let sendButton: UIButton = {
-		let button = UIButton(type: .System)
-		button.setTitle("Send", forState: .Normal)
+		let button = UIButton(type: .system)
+		button.setTitle("Send", for: UIControlState())
 		button.translatesAutoresizingMaskIntoConstraints = false
-		button.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
+		button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
 		return button
 	}()
 	
@@ -42,32 +42,32 @@ class InputContainerView: UIView {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
-		self.backgroundColor = UIColor.whiteColor()
+		self.backgroundColor = UIColor.white
 		
 		addSubview(inputTextField)
 		addSubview(sendButton)
 		addSubview(seperatorView)
 		addSubview(uploadImageView)
 
-		uploadImageView.leftAnchor.constraintEqualToAnchor(leftAnchor).active = true
-		uploadImageView.centerYAnchor.constraintEqualToAnchor(centerYAnchor).active = true
-		uploadImageView.widthAnchor.constraintEqualToConstant(44).active = true
-		uploadImageView.heightAnchor.constraintEqualToConstant(44).active = true
+		uploadImageView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+		uploadImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+		uploadImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
+		uploadImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
 		
-		inputTextField.leftAnchor.constraintEqualToAnchor(uploadImageView.rightAnchor, constant: 8).active = true
-		inputTextField.centerYAnchor.constraintEqualToAnchor(centerYAnchor).active = true
-		inputTextField.rightAnchor.constraintEqualToAnchor(sendButton.leftAnchor).active = true
-		inputTextField.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
+		inputTextField.leftAnchor.constraint(equalTo: uploadImageView.rightAnchor, constant: 8).isActive = true
+		inputTextField.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+		inputTextField.rightAnchor.constraint(equalTo: sendButton.leftAnchor).isActive = true
+		inputTextField.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
 		
-		sendButton.rightAnchor.constraintEqualToAnchor(self.rightAnchor).active = true
-		sendButton.centerYAnchor.constraintEqualToAnchor(self.centerYAnchor).active = true
-		sendButton.widthAnchor.constraintEqualToConstant(80).active = true
-		sendButton.heightAnchor.constraintEqualToAnchor(self.heightAnchor).active = true
+		sendButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+		sendButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+		sendButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+		sendButton.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
 		
-		seperatorView.leftAnchor.constraintEqualToAnchor(self.leftAnchor).active = true
-		seperatorView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
-		seperatorView.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-		seperatorView.heightAnchor.constraintEqualToConstant(1).active = true
+		seperatorView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+		seperatorView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+		seperatorView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+		seperatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

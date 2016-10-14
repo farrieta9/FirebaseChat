@@ -24,7 +24,7 @@ class SettingsController: NSObject, UICollectionViewDelegate, UICollectionViewDa
 	let collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
 		let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-		cv.backgroundColor = UIColor.whiteColor()
+		cv.backgroundColor = UIColor.white
 		return cv
 	}()
 	
@@ -42,12 +42,12 @@ class SettingsController: NSObject, UICollectionViewDelegate, UICollectionViewDa
 		collectionView.dataSource = self
 		collectionView.delegate	= self
 		
-		collectionView.registerClass(SettingsCell.self, forCellWithReuseIdentifier: cellId)
+		collectionView.register(SettingsCell.self, forCellWithReuseIdentifier: cellId)
 		
 	}
 	
 	func showSettings() {
-		if let window = UIApplication.sharedApplication().keyWindow {
+		if let window = UIApplication.shared.keyWindow {
 			blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
 			
 			blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissSettings))
@@ -57,25 +57,25 @@ class SettingsController: NSObject, UICollectionViewDelegate, UICollectionViewDa
 			
 			let height: CGFloat = CGFloat(settings.count) * cellHeight
 			let y = window.frame.height - height
-			collectionView.frame = CGRectMake(0, window.frame.height, window.frame.width, height)
+			collectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
 			
 			blackView.frame = window.frame
 			blackView.alpha = 0
 			
 			
-			UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseInOut, animations: { 
+			UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIViewAnimationOptions(), animations: { 
 				self.blackView.alpha = 1
 				
-				self.collectionView.frame = CGRectMake(0, y, self.collectionView.frame.width, self.collectionView.frame.height)
+				self.collectionView.frame = CGRect(x: 0, y: y, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
 				}, completion: nil)
 		}
 	}
 	
-	func dismissSettings(setting: Setting) {
-		UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+	func dismissSettings(_ setting: Setting) {
+		UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
 			self.blackView.alpha = 0
-			if let window = UIApplication.sharedApplication().keyWindow {
-				self.collectionView.frame = CGRectMake(0, window.frame.height, self.collectionView.frame.width, self.collectionView.frame.height)
+			if let window = UIApplication.shared.keyWindow {
+				self.collectionView.frame = CGRect(x: 0, y: window.frame.height, width: self.collectionView.frame.width, height: self.collectionView.frame.height)
 			}
 		}) { (completed: Bool) in
 			if setting.name != "" && setting.name == "Logout" {
@@ -84,40 +84,37 @@ class SettingsController: NSObject, UICollectionViewDelegate, UICollectionViewDa
 			}
 			
 			if setting.name != "" && setting.name == "Upload from library" {
-				self.messageController?.launchImagePicker(.PhotoLibrary)
+				self.messageController?.launchImagePicker(.photoLibrary)
 				return
 			}
 		}
 	}
-}
 
-
-extension SettingsController {
-	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+	func numberOfSections(in collectionView: UICollectionView) -> Int {
 		return 1
 	}
 	
-	func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return settings.count
 	}
 	
-	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-		return CGSizeMake(collectionView.frame.width, cellHeight)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		return CGSize(width: collectionView.frame.width, height: cellHeight)
 	}
 	
-	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 		return 0
 	}
 	
-	func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-		let setting = self.settings[indexPath.item]
-		dismissSettings(setting)
-	}
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let setting = self.settings[indexPath.item]
+        dismissSettings(setting)
+    }
 	
-	func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath) as! SettingsCell
+	@objc(collectionView:cellForItemAtIndexPath:) func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SettingsCell
 		
-		let setting = settings[indexPath.item]
+		let setting = settings[(indexPath as NSIndexPath).item]
 		cell.setting = setting
 		
 		return cell

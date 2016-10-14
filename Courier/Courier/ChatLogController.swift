@@ -11,7 +11,7 @@ import Firebase
 
 class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
-	private var cellId = "cellId"
+	fileprivate var cellId = "cellId"
 	var user: User? {
 		didSet {
 			navigationItem.title = user?.username
@@ -32,29 +32,29 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
 		}
 	}
 	
-	override func canBecomeFirstResponder() -> Bool {
+	override var canBecomeFirstResponder : Bool {
 		return true
 	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		collectionView?.backgroundColor = UIColor.whiteColor()
+		collectionView?.backgroundColor = UIColor.white
 		inputContainerView.inputTextField.delegate = self
-		inputContainerView.sendButton.addTarget(self, action: #selector(handleSend), forControlEvents: .TouchUpInside)
-		collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
+		inputContainerView.sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+		collectionView?.register(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
 		collectionView?.alwaysBounceVertical = true
 		collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-		collectionView?.keyboardDismissMode = .OnDrag
+		collectionView?.keyboardDismissMode = .onDrag
 	}
 	
-	override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		collectionView?.collectionViewLayout.invalidateLayout()
 	}
 	
 	func handleSend() {
 
-		guard let fromId = FIRAuth.auth()?.currentUser?.uid, toId = user?.uid, message = inputContainerView.inputTextField.text else {
+		guard let fromId = FIRAuth.auth()?.currentUser?.uid, let toId = user?.uid, let message = inputContainerView.inputTextField.text else {
 			return
 		}
 		
@@ -63,8 +63,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
 		}
 		
 		inputContainerView.inputTextField.text = nil
-		let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
-		let value = ["message": message, "toId": toId, "fromId": fromId, "timestamp": timestamp]
+        let timestamp: NSNumber = NSNumber(value: Int(Date().timeIntervalSince1970))
+		let value = ["message": message, "toId": toId, "fromId": fromId, "timestamp": timestamp] as [String : Any]
 
 		FIRDatabase.database().reference().child("messages").childByAutoId().updateChildValues(value) { (error, ref) in
 			if error != nil {
@@ -80,62 +80,70 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
 	}
 	
 	func observeMessages() {
-		guard let uid = FIRAuth.auth()?.currentUser?.uid, toId = user?.uid else {
+		guard let uid = FIRAuth.auth()?.currentUser?.uid, let toId = user?.uid else {
 			return
 		}
 		
-		FIRDatabase.database().reference().child("users-messages").child(uid).child(toId).observeEventType(.ChildAdded, withBlock: { (snapshot) in
+		FIRDatabase.database().reference().child("users-messages").child(uid).child(toId).observe(.childAdded, with: { (snapshot) in
 			
 			let messageId = snapshot.key
-			FIRDatabase.database().reference().child("messages").child(messageId).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+			FIRDatabase.database().reference().child("messages").child(messageId).observeSingleEvent(of: .value, with: { (snapshot) in
 				
 				guard let dictionary = snapshot.value as? [String: AnyObject] else {
 					return
 				}
 				
 				let message = Message()
-				message.setValuesForKeysWithDictionary(dictionary)
+				message.setValuesForKeys(dictionary)
 				
 				self.messages.append(message)
-				dispatch_async(dispatch_get_main_queue(), {
+				DispatchQueue.main.async(execute: {
 					self.collectionView?.reloadData()
 				})
 				
-			}, withCancelBlock: nil)
+			}, withCancel: nil)
 			
-		}, withCancelBlock: nil)
+		}, withCancel: nil)
 	}
 	
-	private func estimateFrameForText(text:String) -> CGRect {
+	fileprivate func estimateFrameForText(_ text:String) -> CGRect {
 		let size = CGSize(width: 200, height: 1000) // height is something large
-		let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
+		let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
 		
-		return NSString(string: text).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(16)], context: nil)
+		return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
 	}
-}
 
-extension ChatLogController {
-	override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+	override func numberOfSections(in collectionView: UICollectionView) -> Int {
 		return 1
 	}
 	
-	override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return messages.count
 	}
 	
-	override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId, forIndexPath: indexPath) as! ChatMessageCell
-		let message = messages[indexPath.row]
-		
-		cell.textView.text = message.message
-		setUpCell(cell, message: message)
-		cell.bubbleViewWidthAnchor?.constant = estimateFrameForText(message.message!).width + 32
-		
-		return cell
-	}
+//	override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
+//		let message = messages[(indexPath as NSIndexPath).row]
+//		
+//		cell.textView.text = message.message
+//		setUpCell(cell, message: message)
+//		cell.bubbleViewWidthAnchor?.constant = estimateFrameForText(message.message!).width + 32
+//		
+//		return cell
+//	}
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatMessageCell
+        
+        let message = messages[indexPath.item]
+        cell.textView.text = message.message
+        setUpCell(cell, message: message)
+        cell.bubbleViewWidthAnchor?.constant = estimateFrameForText(message.message!).width + 32
+        
+        return cell
+    }
 	
 	
-	private func setUpCell(cell: ChatMessageCell, message: Message) {
+	fileprivate func setUpCell(_ cell: ChatMessageCell, message: Message) {
 		
 		if let profileImageURL = user?.profileImageURL {
 			cell.profileImageView.loadImageUsingURLString(profileImageURL)
@@ -144,35 +152,35 @@ extension ChatLogController {
 		if message.fromId == FIRAuth.auth()?.currentUser?.uid {
 			// Outgoing message
 			cell.bubbleView.backgroundColor = ChatMessageCell.blueColor
-			cell.textView.textColor = UIColor.whiteColor()
+			cell.textView.textColor = UIColor.white
 			// Turn off contraint first because activating another one to not have warning
-			cell.bubbleViewLeftAnchor?.active = false
-			cell.bubbleViewRigthAnchor?.active = true
-			cell.profileImageView.hidden = true
+			cell.bubbleViewLeftAnchor?.isActive = false
+			cell.bubbleViewRigthAnchor?.isActive = true
+			cell.profileImageView.isHidden = true
 			
 		} else {
 			// incoming message
 			cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
-			cell.textView.textColor = UIColor.blackColor()
-			cell.bubbleViewRigthAnchor?.active = false
-			cell.bubbleViewLeftAnchor?.active = true
-			cell.profileImageView.hidden = false
+			cell.textView.textColor = UIColor.black
+			cell.bubbleViewRigthAnchor?.isActive = false
+			cell.bubbleViewLeftAnchor?.isActive = true
+			cell.profileImageView.isHidden = false
 		}
 	}
 	
-	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		var height: CGFloat = 80
 		
-		if let text = messages[indexPath.item].message {
-			height = estimateFrameForText(text).height + 20
-		}
-		let width = UIScreen.mainScreen().bounds.width
+        if let text = messages[indexPath.item].message {
+            height = estimateFrameForText(text).height + 20
+        }
+		let width = UIScreen.main.bounds.width
 		return CGSize(width: width, height: height)
 	}
 }
 
 extension ChatLogController: UITextFieldDelegate {
-	func textFieldShouldReturn(textField: UITextField) -> Bool {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		textField.resignFirstResponder()
 		
 		if textField.text!.isEmpty {

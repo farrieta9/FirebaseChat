@@ -25,17 +25,17 @@ class RegisterController: UIViewController {
 		registerView.emailTextField.delegate = self
 		registerView.passwordTextField.delegate = self
 		registerView.usernameTextField.delegate = self
-		registerView.signUpButton.addTarget(self, action: #selector(handleSignUpButton), forControlEvents: .TouchUpInside)
+		registerView.signUpButton.addTarget(self, action: #selector(handleSignUpButton), for: .touchUpInside)
 		hideKeyboardWhenTappedAround()
 	}
 	
 	func handleSignUpButton() {
 		
-		guard let email = registerView.emailTextField.text, password = registerView.passwordTextField.text?.lowercaseString, username = registerView.usernameTextField.text?.lowercaseString else {
+		guard let email = registerView.emailTextField.text, let password = registerView.passwordTextField.text?.lowercased(), let username = registerView.usernameTextField.text?.lowercased() else {
 			return
 		}
 		
-		FIRAuth.auth()?.createUserWithEmail(email, password: password, completion: { (user, error) in
+		FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
 			if error != nil {
 				print(error)
 				return
@@ -53,7 +53,7 @@ class RegisterController: UIViewController {
 							self.displayAlert("Error")
 							
 						} else {
-							self.navigationController?.popViewControllerAnimated(true)
+							self.navigationController?.popViewController(animated: true)
 						}
 					})
 			}
@@ -62,23 +62,23 @@ class RegisterController: UIViewController {
 	
 	func setUpView() {
 		view.addSubview(registerView)
-		registerView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
-		registerView.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor).active = true
-		registerView.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-		registerView.heightAnchor.constraintEqualToAnchor(view.heightAnchor).active = true
+		registerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+		registerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+		registerView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+		registerView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
 	}
 	
-	private func displayAlert(message: String) {
-		let alertController = UIAlertController(title: "Invalid", message: message, preferredStyle: .Alert)
+	fileprivate func displayAlert(_ message: String) {
+		let alertController = UIAlertController(title: "Invalid", message: message, preferredStyle: .alert)
 		
-		let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+		let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 		alertController.addAction(defaultAction)
-		presentViewController(alertController, animated: true, completion: nil)
+		present(alertController, animated: true, completion: nil)
 	}
 }
 
 extension RegisterController: UITextFieldDelegate {
-	func textFieldShouldReturn(textField: UITextField) -> Bool {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		textField.resignFirstResponder()
 		handleSignUpButton()
 		return true

@@ -193,6 +193,7 @@
 					8CADE9F31D6772D200FF298F = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = F9J6KGE3KA;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -409,6 +410,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lil9porkchop.Courier;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -422,6 +424,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lil9porkchop.Courier;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

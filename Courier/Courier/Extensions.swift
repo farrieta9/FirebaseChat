@@ -14,40 +14,49 @@ extension UIColor {
 	}
 }
 
-let imageCache = NSCache()  // Rename to cachedImages
-extension UIImageView {
-	func loadImageUsingURLString(urlString: String) {
-		let url = NSURL(string: urlString)
-		
-		image = nil
-		image = UIImage(named: "default_profile.png")
-		
-		if let imageFromCache = imageCache.objectForKey(urlString) as? UIImage {
-			self.image = imageFromCache
-			return
-		}
-		
-		if urlString == "" {
-			return // has no image in firebase
-		}
-		
-		NSURLSession.sharedSession().dataTaskWithURL(url!) { (data, response, error) in
-			if error != nil {
-				print(error)
-				return
-			}
-			dispatch_async(dispatch_get_main_queue(), {
-				
-				let imageToCache = UIImage(data: data!)
-				
-				imageCache.setObject(imageToCache!, forKey: urlString)
-				
-				self.image = imageToCache
-			})
-			}.resume()
-	}
-}
+//let imageCache = NSCache()  // Rename to cachedImages
+var imageCache = [String: AnyObject]()
 
+extension UIImageView {
+    func loadImageUsingURLString(_ urlString: String) {
+        let url = URL(string: urlString)
+        
+        image = nil
+        image = UIImage(named: "default_profile.png")
+        
+        /*
+         if let imageFromCache = imageCache.object(forKey: urlString) as? UIImage {
+         self.image = imageFromCache
+         return
+         }
+         */
+        
+        if let imageFromCache = imageCache[urlString] as? UIImage {
+            self.image = imageFromCache
+            return
+        }
+        
+        if urlString == "" {
+            return // has no image in firebase
+        }
+        
+        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error)
+                return
+            }
+            DispatchQueue.main.async(execute: {
+                
+                let imageToCache = UIImage(data: data!)
+                
+                //imageCache.setObject(imageToCache!, forKey: urlString)
+                imageCache[urlString] = imageToCache
+                
+                self.image = imageToCache
+            })
+        }) .resume()
+    }
+}
 extension UIViewController {
 	func hideKeyboardWhenTappedAround() {
 		let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
@@ -60,14 +69,14 @@ extension UIViewController {
 }
 
 extension UIView {
-	func addConstraintsWithFormat(format: String, views: UIView...) {
+	func addConstraintsWithFormat(_ format: String, views: UIView...) {
 		var viewsDictionary = [String: UIView]()
-		for (index, view) in views.enumerate() {
+		for (index, view) in views.enumerated() {
 			let key = "v\(index)"
 			view.translatesAutoresizingMaskIntoConstraints = false
 			viewsDictionary[key] = view
 		}
 		
-		addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
+		addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
 	}
 }

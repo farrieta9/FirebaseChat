@@ -8,13 +8,33 @@
 
 import UIKit
 import Firebase
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class MessageController: UITableViewController {
 	
-	private let cellId = "cellId"
+	fileprivate let cellId = "cellId"
 	var messages = [Message]()
 	var messagesDictionary = [String: Message]()
-	var timer: NSTimer?
+	var timer: Timer?
 	
 	lazy var settingsLauncher: SettingsController = {
 		let launcher = SettingsController()
@@ -26,11 +46,11 @@ class MessageController: UITableViewController {
 		super.viewDidLoad()
 		observeUserMessages()
 		checkIfUserIsSignedIn()
-		navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu-50"), style: .Plain, target: self, action: #selector(handleSettings))
+		navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "Menu-50"), style: .plain, target: self, action: #selector(handleSettings))
 		
 		let image = UIImage(named: "CreateNew-50")
-		navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(handleNewMessage))
-		tableView.registerClass(UserCell.self, forCellReuseIdentifier: cellId)
+		navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(handleNewMessage))
+		tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
 	}
 	
 	func handleSettings() {
@@ -41,23 +61,23 @@ class MessageController: UITableViewController {
 		let newMessageController = NewMessageController()
 		newMessageController.messageController = self
 		let navController = UINavigationController(rootViewController: newMessageController)
-		presentViewController(navController, animated: true, completion: nil)
+		present(navController, animated: true, completion: nil)
 	}
 	
 	func checkIfUserIsSignedIn() {
 		if FIRAuth.auth()?.currentUser?.uid == nil {
 			// To remove error 'Unbalanced calls to begin end appearance transitions for UINavCtrl
-			performSelector(#selector(handleLogout), withObject: nil, afterDelay: 0)
+			perform(#selector(handleLogout), with: nil, afterDelay: 0)
 		} else {
 			
 			let uid = FIRAuth.auth()?.currentUser?.uid
-			FIRDatabase.database().reference().child("users").child(uid!).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+			FIRDatabase.database().reference().child("users").child(uid!).observeSingleEvent(of: .value, with: { (snapshot) in
 
 				if let results = snapshot.value as? [String: AnyObject] {
 					self.navigationItem.title = results["username"] as? String
 				}
 				
-			}, withCancelBlock: nil)
+			}, withCancel: nil)
 		}
 	}
 	
@@ -71,7 +91,7 @@ class MessageController: UITableViewController {
 		
 		let loginController = LoginController()
 		let navController = UINavigationController(rootViewController: loginController)
-		presentViewController(navController, animated: true, completion: nil)		
+		present(navController, animated: true, completion: nil)		
 	}
 	
 	func observeUserMessages() {
@@ -82,49 +102,49 @@ class MessageController: UITableViewController {
 			return
 		}
 		
-		FIRDatabase.database().reference().child("users-messages").child(uid).observeEventType(.ChildAdded, withBlock: { (snapshot) in
+		FIRDatabase.database().reference().child("users-messages").child(uid).observe(.childAdded, with: { (snapshot) in
 			
 			let userId = snapshot.key
-			FIRDatabase.database().reference().child("users-messages").child(uid).child(userId).observeEventType(.ChildAdded, withBlock: { (snapshot) in
+			FIRDatabase.database().reference().child("users-messages").child(uid).child(userId).observe(.childAdded, with: { (snapshot) in
 				
 				let messageId = snapshot.key
 				self.fetchMessageWithMessageId(messageId)
 				
-			}, withCancelBlock: nil)
-		}, withCancelBlock: nil)
+			}, withCancel: nil)
+		}, withCancel: nil)
 	}
 	
 	func handleReloadTable() {
 		self.messages = Array(self.messagesDictionary.values)
-		self.messages.sortInPlace({ (message1, message2) -> Bool in
+		self.messages.sort(by: { (message1, message2) -> Bool in
 			// Decending order
-			return message1.timestamp?.intValue > message2.timestamp?.intValue
+			return message1.timestamp?.int32Value > message2.timestamp?.int32Value
 		})
-		dispatch_async(dispatch_get_main_queue(), {
+		DispatchQueue.main.async(execute: {
 			self.tableView.reloadData()
 		})
 	}
 	
-	func showChatControllerForUser(user: User) {
+	func showChatControllerForUser(_ user: User) {
 		let chatLogController = ChatLogController(collectionViewLayout: UICollectionViewFlowLayout())
 		chatLogController.user = user
 		navigationController?.pushViewController(chatLogController, animated: true)
 	}
 	
-	private func attemptReloadTable() {
+	fileprivate func attemptReloadTable() {
 		self.timer?.invalidate()
-		self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+		self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
 	}
 	
-	private func fetchMessageWithMessageId(messageId: String) {
-		FIRDatabase.database().reference().child("messages").child(messageId).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+	fileprivate func fetchMessageWithMessageId(_ messageId: String) {
+		FIRDatabase.database().reference().child("messages").child(messageId).observeSingleEvent(of: .value, with: { (snapshot) in
 			
 			guard let results = snapshot.value as? [String: AnyObject] else {
 				return
 			}
 			
 			let message = Message()
-			message.setValuesForKeysWithDictionary(results)
+			message.setValuesForKeys(results)
 			
 			if let chatPartnerId = message.getChatPartnerId() {
 				self.messagesDictionary[chatPartnerId] = message
@@ -132,43 +152,43 @@ class MessageController: UITableViewController {
 			
 			self.attemptReloadTable()
 			
-			}, withCancelBlock: nil)
+			}, withCancel: nil)
 	}
 	
 }
 
 extension MessageController {
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return messages.count
 	}
 	
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 	
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
-		let cell = tableView.dequeueReusableCellWithIdentifier(cellId, forIndexPath: indexPath) as! UserCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
 		
-		let message = messages[indexPath.row]
+		let message = messages[(indexPath as NSIndexPath).row]
 		cell.message = message
 		
 		
 		return cell
 	}
 	
-	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return 72
 	}
 	
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let message = messages[indexPath.row]
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let message = messages[(indexPath as NSIndexPath).row]
 		
 		guard let chatPartnerId = message.getChatPartnerId() else {
 			return
 		}
 		
-		FIRDatabase.database().reference().child("users").child(chatPartnerId).observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+		FIRDatabase.database().reference().child("users").child(chatPartnerId).observeSingleEvent(of: .value, with: { (snapshot) in
 			
 			guard let results = snapshot.value as? [String: AnyObject] else {
 				return
@@ -176,31 +196,31 @@ extension MessageController {
 			
 			let user = User()
 			user.uid = chatPartnerId
-			user.setValuesForKeysWithDictionary(results)
+			user.setValuesForKeys(results)
 			self.showChatControllerForUser(user)
 			
-		}, withCancelBlock: nil)
+		}, withCancel: nil)
 	}
 }
 
 extension MessageController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
-	func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
 		guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
 			return
 		}
 		
 		uploadUserImageToFirebase(image)
-		dismissViewControllerAnimated(true, completion: nil)
+		dismiss(animated: true, completion: nil)
 	}
 	
-	private func uploadUserImageToFirebase(image: UIImage) {
+	fileprivate func uploadUserImageToFirebase(_ image: UIImage) {
 		
-		guard let uploadImage = UIImageJPEGRepresentation(image, 0.1), uid = FIRAuth.auth()?.currentUser?.uid  else {
+		guard let uploadImage = UIImageJPEGRepresentation(image, 0.1), let uid = FIRAuth.auth()?.currentUser?.uid  else {
 			return
 		}
 		
-		FIRStorage.storage().reference().child("users-images").child(uid).putData(uploadImage, metadata: nil) { (metadata, error) in
+		FIRStorage.storage().reference().child("users-images").child(uid).put(uploadImage, metadata: nil) { (metadata, error) in
 			if error != nil {
 				print(error)
 				return
@@ -215,17 +235,17 @@ extension MessageController: UIImagePickerControllerDelegate, UINavigationContro
 		}
 	}
 	
-	func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-		dismissViewControllerAnimated(true, completion: nil)
+	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+		dismiss(animated: true, completion: nil)
 	}
 	
-	func launchImagePicker(sourceType: UIImagePickerControllerSourceType) {
+	func launchImagePicker(_ sourceType: UIImagePickerControllerSourceType) {
 		if UIImagePickerController.isSourceTypeAvailable(sourceType) {
 			let picker = UIImagePickerController()
 			picker.sourceType = sourceType
 			picker.allowsEditing = false
 			picker.delegate = self
-			presentViewController(picker, animated: true, completion: nil)
+			present(picker, animated: true, completion: nil)
 		}
 	}
 }

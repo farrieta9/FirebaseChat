@@ -22,17 +22,17 @@ class LoginController: UIViewController {
 		view.backgroundColor = UIColor(r: 100, g: 100, b: 100)
 		
 		self.navigationItem.title = "Login"
-		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
 		self.navigationController?.navigationBar.shadowImage = UIImage()
-		self.navigationController?.navigationBar.translucent = true
-		self.navigationController?.navigationBar.tintColor = UIColor.whiteColor() // Makes the back button white
-		self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+		self.navigationController?.navigationBar.isTranslucent = true
+		self.navigationController?.navigationBar.tintColor = UIColor.white // Makes the back button white
+		self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
 		
 		setUpView()
 		loginView.emailTextField.delegate = self
 		loginView.passwordTextField.delegate = self
-		loginView.loginButton.addTarget(self, action: #selector(handleLogin), forControlEvents: .TouchUpInside)
-		loginView.signUpButton.addTarget(self, action: #selector(self.handleRegisterButton), forControlEvents: .TouchUpInside)
+		loginView.loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+		loginView.signUpButton.addTarget(self, action: #selector(self.handleRegisterButton), for: .touchUpInside)
 		hideKeyboardWhenTappedAround()
 	}
 	
@@ -40,18 +40,18 @@ class LoginController: UIViewController {
 		view.addSubview(loginView)
 		
 		// need x, y, width, height
-		loginView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
-		loginView.centerYAnchor.constraintEqualToAnchor(view.centerYAnchor).active = true
-		loginView.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-		loginView.heightAnchor.constraintEqualToAnchor(view.heightAnchor).active = true
+		loginView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+		loginView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+		loginView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+		loginView.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
 	}
 	
-	override func preferredStatusBarStyle() -> UIStatusBarStyle {
-		return .LightContent
+	override var preferredStatusBarStyle : UIStatusBarStyle {
+		return .lightContent
 	}
 
 	func handleLogin() {
-		guard let email = loginView.emailTextField.text, password = loginView.passwordTextField.text else {
+		guard let email = loginView.emailTextField.text, let password = loginView.passwordTextField.text else {
 			return
 		}
 		
@@ -59,14 +59,14 @@ class LoginController: UIViewController {
 			return
 		}
 		
-		FIRAuth.auth()?.signInWithEmail(email, password: password, completion: { (user, error) in
+		FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
 			if error != nil {
 				print(error)
 				self.displayAlert("Error with email or password")
-				print(error?.userInfo)
+				print(error?._userInfo)
 				return
 			} else {
-				self.dismissViewControllerAnimated(true, completion: nil)
+				self.dismiss(animated: true, completion: nil)
 			}
 		})
 	}
@@ -76,17 +76,17 @@ class LoginController: UIViewController {
 		navigationController?.pushViewController(registerController, animated: true)
 	}
 	
-	private func displayAlert(message: String) {
-		let alertController = UIAlertController(title: "Invalid", message: message, preferredStyle: .Alert)
+	fileprivate func displayAlert(_ message: String) {
+		let alertController = UIAlertController(title: "Invalid", message: message, preferredStyle: .alert)
 		
-		let defaultAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+		let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
 		alertController.addAction(defaultAction)
-		presentViewController(alertController, animated: true, completion: nil)
+		present(alertController, animated: true, completion: nil)
 	}
 }
 
 extension LoginController: UITextFieldDelegate {
-	func textFieldShouldReturn(textField: UITextField) -> Bool {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		
 		textField.resignFirstResponder()
 		handleLogin()

@@ -12,7 +12,7 @@ class RegisterView: UIView {
 	
 	let inputContainerView: UIView = {
 		let view = UIView()
-		view.backgroundColor = UIColor.whiteColor()
+		view.backgroundColor = UIColor.white
 		view.translatesAutoresizingMaskIntoConstraints = false
 		view.layer.cornerRadius = 8
 		view.layer.masksToBounds = true
@@ -23,9 +23,9 @@ class RegisterView: UIView {
 		let textfield = UITextField()
 		textfield.placeholder = "Username"
 		textfield.translatesAutoresizingMaskIntoConstraints = false
-		textfield.autocorrectionType = .No
-		textfield.keyboardType = .Default
-		textfield.autocapitalizationType = .None
+		textfield.autocorrectionType = .no
+		textfield.keyboardType = .default
+		textfield.autocapitalizationType = .none
 		return textfield
 	}()
 	
@@ -33,9 +33,9 @@ class RegisterView: UIView {
 		let textfield = UITextField()
 		textfield.placeholder = "Email"
 		textfield.translatesAutoresizingMaskIntoConstraints = false
-		textfield.autocorrectionType = .No
-		textfield.keyboardType = .EmailAddress
-		textfield.autocapitalizationType = .None
+		textfield.autocorrectionType = .no
+		textfield.keyboardType = .emailAddress
+		textfield.autocapitalizationType = .none
 		return textfield
 	}()
 	
@@ -57,19 +57,19 @@ class RegisterView: UIView {
 		let textfield = UITextField()
 		textfield.placeholder = "Password"
 		textfield.translatesAutoresizingMaskIntoConstraints = false
-		textfield.secureTextEntry = true
-		textfield.keyboardType = .Default
-		textfield.autocorrectionType = .No
-		textfield.autocapitalizationType = .None
+		textfield.isSecureTextEntry = true
+		textfield.keyboardType = .default
+		textfield.autocorrectionType = .no
+		textfield.autocapitalizationType = .none
 		return textfield
 	}()
 	
 	let signUpButton: UIButton = {
 		let button = UIButton()
-		button.setTitle("Sign Up", forState: .Normal)
+		button.setTitle("Sign Up", for: UIControlState())
 		button.translatesAutoresizingMaskIntoConstraints = false
-		button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-		button.titleLabel?.font = UIFont.boldSystemFontOfSize(16)
+		button.setTitleColor(UIColor.white, for: UIControlState())
+		button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
 		button.layer.cornerRadius = 8
 		button.layer.masksToBounds = true
 		button.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
@@ -83,10 +83,10 @@ class RegisterView: UIView {
 		addSubview(signUpButton)
 		
 		// need x, y, width, height
-		inputContainerView.centerXAnchor.constraintEqualToAnchor(centerXAnchor).active = true
-		inputContainerView.centerYAnchor.constraintEqualToAnchor(centerYAnchor).active = true
-		inputContainerView.widthAnchor.constraintEqualToAnchor(widthAnchor, constant: -24).active = true
-		inputContainerView.heightAnchor.constraintEqualToConstant(150).active = true
+		inputContainerView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+		inputContainerView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+		inputContainerView.widthAnchor.constraint(equalTo: widthAnchor, constant: -24).isActive = true
+		inputContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
 		
 		inputContainerView.addSubview(usernameTextField)
 		inputContainerView.addSubview(nameSeparatorView)
@@ -94,35 +94,35 @@ class RegisterView: UIView {
 		inputContainerView.addSubview(emailSeparatorView)
 		inputContainerView.addSubview(passwordTextField)
 		
-		usernameTextField.centerXAnchor.constraintEqualToAnchor(inputContainerView.centerXAnchor).active = true
-		usernameTextField.topAnchor.constraintEqualToAnchor(inputContainerView.topAnchor).active = true
-		usernameTextField.widthAnchor.constraintEqualToAnchor(inputContainerView.widthAnchor, constant: -24).active = true
-		usernameTextField.heightAnchor.constraintEqualToAnchor(inputContainerView.heightAnchor, multiplier: 1/3).active = true
+		usernameTextField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+		usernameTextField.topAnchor.constraint(equalTo: inputContainerView.topAnchor).isActive = true
+		usernameTextField.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor, constant: -24).isActive = true
+		usernameTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: 1/3).isActive = true
 		
-		nameSeparatorView.centerXAnchor.constraintEqualToAnchor(inputContainerView.centerXAnchor).active = true
-		nameSeparatorView.topAnchor.constraintEqualToAnchor(usernameTextField.bottomAnchor).active = true
-		nameSeparatorView.widthAnchor.constraintEqualToAnchor(inputContainerView.widthAnchor).active = true
-		nameSeparatorView.heightAnchor.constraintEqualToConstant(1).active = true
+		nameSeparatorView.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+		nameSeparatorView.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor).isActive = true
+		nameSeparatorView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor).isActive = true
+		nameSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 		
-		emailTextField.centerXAnchor.constraintEqualToAnchor(inputContainerView.centerXAnchor).active = true
-		emailTextField.topAnchor.constraintEqualToAnchor(nameSeparatorView.bottomAnchor).active = true
-		emailTextField.widthAnchor.constraintEqualToAnchor(inputContainerView.widthAnchor, constant: -24).active = true
-		emailTextField.heightAnchor.constraintEqualToAnchor(inputContainerView.heightAnchor, multiplier: 1/3).active = true
+		emailTextField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+		emailTextField.topAnchor.constraint(equalTo: nameSeparatorView.bottomAnchor).isActive = true
+		emailTextField.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor, constant: -24).isActive = true
+		emailTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: 1/3).isActive = true
 		
-		emailSeparatorView.centerXAnchor.constraintEqualToAnchor(inputContainerView.centerXAnchor).active = true
-		emailSeparatorView.topAnchor.constraintEqualToAnchor(emailTextField.bottomAnchor).active = true
-		emailSeparatorView.widthAnchor.constraintEqualToAnchor(inputContainerView.widthAnchor).active = true
-		emailSeparatorView.heightAnchor.constraintEqualToConstant(1).active = true
+		emailSeparatorView.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+		emailSeparatorView.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
+		emailSeparatorView.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor).isActive = true
+		emailSeparatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 		
-		passwordTextField.centerXAnchor.constraintEqualToAnchor(inputContainerView.centerXAnchor).active = true
-		passwordTextField.topAnchor.constraintEqualToAnchor(emailSeparatorView.bottomAnchor).active = true
-		passwordTextField.widthAnchor.constraintEqualToAnchor(inputContainerView.widthAnchor, constant: -24).active = true
-		passwordTextField.heightAnchor.constraintEqualToAnchor(inputContainerView.heightAnchor, multiplier: 1/3).active = true
+		passwordTextField.centerXAnchor.constraint(equalTo: inputContainerView.centerXAnchor).isActive = true
+		passwordTextField.topAnchor.constraint(equalTo: emailSeparatorView.bottomAnchor).isActive = true
+		passwordTextField.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor, constant: -24).isActive = true
+		passwordTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: 1/3).isActive = true
 
-		signUpButton.centerXAnchor.constraintEqualToAnchor(centerXAnchor).active = true
-		signUpButton.topAnchor.constraintEqualToAnchor(inputContainerView.bottomAnchor, constant: 8).active = true
-		signUpButton.widthAnchor.constraintEqualToAnchor(inputContainerView.widthAnchor).active = true
-		signUpButton.heightAnchor.constraintEqualToConstant(50).active = true
+		signUpButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+		signUpButton.topAnchor.constraint(equalTo: inputContainerView.bottomAnchor, constant: 8).isActive = true
+		signUpButton.widthAnchor.constraint(equalTo: inputContainerView.widthAnchor).isActive = true
+		signUpButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
 		
 	}
 	
