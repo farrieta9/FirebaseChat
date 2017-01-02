@@ -1,0 +1,6 @@
+framework module Pods_Messenger_Instant_Translator {
+  umbrella header "Pods-Messenger-Instant-Translator-umbrella.h"
+
+  export *
+  module * { export * }
+}
