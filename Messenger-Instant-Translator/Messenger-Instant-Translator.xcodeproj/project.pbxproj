@@ -24,6 +24,8 @@
 		8C702EC41E10C1F40053DA5B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C702EC31E10C1F40053DA5B /* Extensions.swift */; };
 		8C702EC61E1177BE0053DA5B /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C702EC51E1177BE0053DA5B /* RegisterController.swift */; };
 		8C702EC81E1177F70053DA5B /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C702EC71E1177F70053DA5B /* RegisterView.swift */; };
+		8CA7ED3E1E23547A005481AF /* LanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA7ED3D1E23547A005481AF /* LanguageController.swift */; };
+		8CA7ED401E235801005481AF /* LanguageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA7ED3F1E235801005481AF /* LanguageCell.swift */; };
 		8CCC49151E1454ED00169FE0 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCC49141E1454ED00169FE0 /* MainNavigationController.swift */; };
 		8CF9C1A61E130DEC00867BD6 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF9C1A51E130DEC00867BD6 /* ChatMessageCell.swift */; };
 /* End PBXBuildFile section */
@@ -49,6 +51,8 @@
 		8C702EC31E10C1F40053DA5B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		8C702EC51E1177BE0053DA5B /* RegisterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
 		8C702EC71E1177F70053DA5B /* RegisterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		8CA7ED3D1E23547A005481AF /* LanguageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageController.swift; sourceTree = "<group>"; };
+		8CA7ED3F1E235801005481AF /* LanguageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageCell.swift; sourceTree = "<group>"; };
 		8CCC49141E1454ED00169FE0 /* MainNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		8CF9C1A51E130DEC00867BD6 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		9A9645A3689174DBEFC95BB2 /* Pods-Messenger-Instant-Translator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Messenger-Instant-Translator.release.xcconfig"; path = "Pods/Target Support Files/Pods-Messenger-Instant-Translator/Pods-Messenger-Instant-Translator.release.xcconfig"; sourceTree = "<group>"; };
@@ -118,6 +122,7 @@
 				8C702EBF1E10B7EB0053DA5B /* LoginController.swift */,
 				8C702EC51E1177BE0053DA5B /* RegisterController.swift */,
 				8CCC49141E1454ED00169FE0 /* MainNavigationController.swift */,
+				8CA7ED3D1E23547A005481AF /* LanguageController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -130,6 +135,7 @@
 				8C702EC71E1177F70053DA5B /* RegisterView.swift */,
 				8C5E9FD81E1192CD00305E36 /* InputContainerView.swift */,
 				8CF9C1A51E130DEC00867BD6 /* ChatMessageCell.swift */,
+				8CA7ED3F1E235801005481AF /* LanguageCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -277,6 +283,7 @@
 			files = (
 				8CCC49151E1454ED00169FE0 /* MainNavigationController.swift in Sources */,
 				8C5E9FDE1E11940A00305E36 /* User.swift in Sources */,
+				8CA7ED401E235801005481AF /* LanguageCell.swift in Sources */,
 				8C2006951E107FC800457CC6 /* MessengerController.swift in Sources */,
 				8C702EC81E1177F70053DA5B /* RegisterView.swift in Sources */,
 				8C702EC21E10B9A70053DA5B /* LoginView.swift in Sources */,
@@ -286,6 +293,7 @@
 				8C5E9FD91E1192CD00305E36 /* InputContainerView.swift in Sources */,
 				8C20069D1E108B8700457CC6 /* CreateMessegeController.swift in Sources */,
 				8C2006811E107B4800457CC6 /* AppDelegate.swift in Sources */,
+				8CA7ED3E1E23547A005481AF /* LanguageController.swift in Sources */,
 				8C20069F1E108EB000457CC6 /* ChatLogController.swift in Sources */,
 				8C5E9FDC1E1193E500305E36 /* Message.swift in Sources */,
 				8C20069B1E10819500457CC6 /* MessengerCell.swift in Sources */,

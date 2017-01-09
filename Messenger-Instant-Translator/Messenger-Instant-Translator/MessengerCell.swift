@@ -54,9 +54,7 @@ class MessengerCell: UITableViewCell{
         super.layoutSubviews()
         textLabel?.frame = CGRect(x: profileImageView.frame.width + 16, y: textLabel!.frame.origin.y, width: textLabel!.frame.width, height: textLabel!.frame.height)
         
-        detailTextLabel?.frame = CGRect(x: profileImageView.frame.width + 16, y: detailTextLabel!.frame.origin.y, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
-
-
+        detailTextLabel?.frame = CGRect(x: profileImageView.frame.width + 16, y: detailTextLabel!.frame.origin.y, width: UIScreen.main.bounds.width - profileImageView.frame.width - 50, height: detailTextLabel!.frame.height)
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {

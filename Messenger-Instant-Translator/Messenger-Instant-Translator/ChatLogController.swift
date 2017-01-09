@@ -19,6 +19,17 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return contentView
     }()
     
+//    lazy var settingsLauncher: SettingsController = {
+//        let launcher = SettingsController()
+//        launcher.messageController = self
+//        return launcher
+//    }()
+    lazy var languageController: LanguageController = {
+        let controller = LanguageController()
+        controller.chatLogController = self
+        return controller
+    }()
+    
     var user: User? {
         didSet {
             navigationItem.title = user?.username
@@ -36,6 +47,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return true
     }
     
+    lazy var heightOfNavigationBar: CGFloat = self.navigationController!.navigationBar.frame.size.height
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
@@ -45,6 +58,13 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView?.alwaysBounceVertical = true
         inputContainerView.inputTextField.delegate = self
         inputContainerView.sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Language", style: .plain, target: self, action: #selector(handleSetLanguage))
+    }
+    
+    func handleSetLanguage() {
+        inputContainerView.isHidden = true
+        languageController.showLanguages()
     }
     
     func observeMessages() {
