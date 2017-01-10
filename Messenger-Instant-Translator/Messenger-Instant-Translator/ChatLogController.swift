@@ -19,11 +19,6 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return contentView
     }()
     
-//    lazy var settingsLauncher: SettingsController = {
-//        let launcher = SettingsController()
-//        launcher.messageController = self
-//        return launcher
-//    }()
     lazy var languageController: LanguageController = {
         let controller = LanguageController()
         controller.chatLogController = self

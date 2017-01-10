@@ -19,6 +19,7 @@
 		8C5E9FD91E1192CD00305E36 /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E9FD81E1192CD00305E36 /* InputContainerView.swift */; };
 		8C5E9FDC1E1193E500305E36 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E9FDB1E1193E500305E36 /* Message.swift */; };
 		8C5E9FDE1E11940A00305E36 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E9FDD1E11940A00305E36 /* User.swift */; };
+		8C6314A51E25856C003C88B1 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6314A41E25856C003C88B1 /* Languages.swift */; };
 		8C702EC01E10B7EB0053DA5B /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C702EBF1E10B7EB0053DA5B /* LoginController.swift */; };
 		8C702EC21E10B9A70053DA5B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C702EC11E10B9A70053DA5B /* LoginView.swift */; };
 		8C702EC41E10C1F40053DA5B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C702EC31E10C1F40053DA5B /* Extensions.swift */; };
@@ -46,6 +47,7 @@
 		8C5E9FD81E1192CD00305E36 /* InputContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		8C5E9FDB1E1193E500305E36 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		8C5E9FDD1E11940A00305E36 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		8C6314A41E25856C003C88B1 /* Languages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = "<group>"; };
 		8C702EBF1E10B7EB0053DA5B /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		8C702EC11E10B9A70053DA5B /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		8C702EC31E10C1F40053DA5B /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			children = (
 				8C5E9FDB1E1193E500305E36 /* Message.swift */,
 				8C5E9FDD1E11940A00305E36 /* User.swift */,
+				8C6314A41E25856C003C88B1 /* Languages.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 				8C5E9FDC1E1193E500305E36 /* Message.swift in Sources */,
 				8C20069B1E10819500457CC6 /* MessengerCell.swift in Sources */,
 				8C702EC61E1177BE0053DA5B /* RegisterController.swift in Sources */,
+				8C6314A51E25856C003C88B1 /* Languages.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

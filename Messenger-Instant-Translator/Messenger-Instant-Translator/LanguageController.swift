@@ -10,6 +10,14 @@ import UIKit
 
 class LanguageController: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+//    var languages = [Languages]()
+    var languages: [Languages] = {
+        let english = Languages.English
+        let spanish = Languages.Spanish
+        let german = Languages.German
+        return [english, spanish, german]
+    }()
+    
     var chatLogController: ChatLogController?
     
     private let cellId = "cellId"
@@ -19,10 +27,11 @@ class LanguageController: NSObject, UICollectionViewDelegate, UICollectionViewDa
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = UIColor.white
+        cv.isScrollEnabled = false
         return cv
     }()
     
-    private let cellHeight: CGFloat = 50
+    private let cellHeight: CGFloat = 40
     
     override init() {
         super.init()
@@ -31,7 +40,6 @@ class LanguageController: NSObject, UICollectionViewDelegate, UICollectionViewDa
         collectionView.delegate = self
         
         collectionView.register(LanguageCell.self, forCellWithReuseIdentifier: cellId)
-        
     }
     
     func showLanguages() {
@@ -52,7 +60,9 @@ class LanguageController: NSObject, UICollectionViewDelegate, UICollectionViewDa
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIViewAnimationOptions(), animations: { 
                 self.blackView.alpha = 1
                 
-                self.collectionView.frame = CGRect(x: window.frame.width - width - 16, y: self.chatLogController!.heightOfNavigationBar + 20, width: width, height: 100)
+                let height = self.cellHeight * CGFloat(self.languages.count)
+                
+                self.collectionView.frame = CGRect(x: window.frame.width - width - 16, y: self.chatLogController!.heightOfNavigationBar + 20, width: width, height: height)
                 
             }, completion: nil)
     
@@ -78,12 +88,12 @@ class LanguageController: NSObject, UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return languages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! LanguageCell
-        cell.backgroundColor = .red
+        cell.languageLabel.text = languages[indexPath.item].rawValue
         return cell
     }
     
@@ -92,7 +102,7 @@ class LanguageController: NSObject, UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 4
+        return 0
     }
     
 }

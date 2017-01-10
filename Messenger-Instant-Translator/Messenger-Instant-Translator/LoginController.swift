@@ -78,11 +78,7 @@ class LoginController: UIViewController {
         self.showMessengerController()
     }
     
-    func showMessengerController() {
-//        let messengeController = MessengerController()
-//        let navController = UINavigationController(rootViewController: messengeController)
-//        present(navController, animated: true, completion: nil)
-        
+    func showMessengerController() {        
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
         guard let mainNavigationController = rootViewController as? MainNavigationController else {
             return
